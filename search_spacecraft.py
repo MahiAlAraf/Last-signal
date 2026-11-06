@@ -11,7 +11,7 @@ WIKIPEDIA_SUMMARY_URL = "https://en.wikipedia.org/api/rest_v1/page/summary/"
 NASA_SEARCH_URL = "https://images-api.nasa.gov/search"
 
 
-def search_fitz():
+def search_spacecraft():
     """User typed a name: correct it, find the id, then show the story."""
     tools.clear_screen()
     user_search = input("\n Search a spacecraft: ").strip()
@@ -30,12 +30,12 @@ def search_fitz():
         print(f"Loading results for {corrected}.....")
 
     try:
-        Media_ID = fetch_id(corrected)
+        ship_ID = fetch_id(corrected)
     except ValueError:
         print("Could not find that spacecraft. Try again.")
         return
 
-    show_review(Media_ID, corrected)
+    show_review(ship_ID, corrected)
 
 
 def show_picked(item):
@@ -43,21 +43,21 @@ def show_picked(item):
     show_review(item["id"], item["title"])
 
 
-def show_review(Media_ID, Title):
+def show_review(Ship_ID, Title):
     profile = tools.load_profile()
     if profile is None:
         print("No profile found. Run main.py to create one.")
         return
 
     level = tools.get_level(profile["points"])
-    item = Content_data.find_item(Media_ID)
-    key = (Media_ID, level)
+    item = Content_data.find_item(Ship_ID)
+    key = (Ship_ID, level)
 
     if key in raw_review:
         responce = raw_review[key]
     else:
         print("\nOpening the archive... the story is being written, please wait.")
-        Facts, Wiki_text, Captions, Images, Sources = fetch_details(Media_ID)
+        Facts, Wiki_text, Captions, Images, Sources = fetch_details(Ship_ID)
 
         story = chatbot.Unique_message(Title, level, Facts, Wiki_text, Captions)
         if not story:
@@ -86,12 +86,12 @@ def show_review(Media_ID, Title):
     for source in responce["sources"]:
         print(f" - {source}")
     print("=" * 80)
-
+    tools.enter_to_continue()
     story_quiz(item)
 
 
 def story_quiz(item):
-    """One quick question after a story. This is how the level goes up."""
+    tools.clear_screen()
     profile = tools.load_profile()
     if item["id"] in profile["stories"]:
         print("\nYou already finished this story, so there are no new points.")
@@ -180,4 +180,4 @@ def fetch_details(ID):
 
 
 if __name__ == "__main__":
-    search_fitz()
+    search_spacecraft()

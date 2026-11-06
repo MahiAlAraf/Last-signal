@@ -10,10 +10,8 @@ client = genai.Client()
 
 
 def Check_title(Title):
-    """Turn what the user typed into the official name of a spacecraft in the
-    archive. Returns "UNKNOWN" if it is not in the archive."""
 
-    # Step 1: exact name or alias (free and instant, no AI needed)
+  
     item = Content_data.find_by_name(Title)
     if item:
         return item["name"]
@@ -29,8 +27,9 @@ def Check_title(Title):
     if close:
         return spellings[close[0]]
 
-    # Step 3: ask Gemini, but only let it choose from OUR list
+    
     names = [entry["name"] for entry in Data.Spacecraft]
+    
     prompt = (
         "The user typed the name of a NASA spacecraft. It may be misspelled or described in other words.\n"
         "Here is the list of spacecraft we have stories for:\n"

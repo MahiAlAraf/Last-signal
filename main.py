@@ -3,8 +3,8 @@ import random
 import cowsay
 import tools
 import Data
-from search_fitz import search_fitz
-from get_fitz import get_fitz
+from search_spacecraft import search_spacecraft
+from get_story import get_story
 
 MENU_EXIT = "exit"
 MENU_PROFILE_DELETED = "profile_deleted"
@@ -67,18 +67,18 @@ def show_menu():
         tools.clear_screen()
         print("+--------------------------------------+")
         print("|         [1] Search a spacecraft      |")
-        print("|         [2] Find your signal         |")
+        print("|         [2] New Story                |")
         print("|         [3] Show profile             |")
         print("|         [4] Exit                     |")
         print("+--------------------------------------+")
         user_choice = tools.choice(1, 4)
 
         if user_choice == 1:
-            search_fitz()
+            search_spacecraft()
             tools.enter_to_continue()
         elif user_choice == 2:
             print("==================================")
-            get_fitz()
+            get_story()
             print("==================================")
             tools.enter_to_continue()
         elif user_choice == 3:

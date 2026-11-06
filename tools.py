@@ -90,7 +90,7 @@ def ask_name():
 
 # --------------------------- knowledge level ------------------------------
 def get_level(points):
-    """Turn points into a level name, using the table in Data.Levels."""
+    
     level_name = Data.Levels[0][0]
     for name, minimum in Data.Levels:
         if points >= minimum:

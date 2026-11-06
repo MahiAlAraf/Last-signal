@@ -2,10 +2,10 @@ import tools
 import random
 import Data
 from Content_data import get_content_List, add_limit
-from search_fitz import show_picked
+from search_spacecraft import show_picked
 
 
-def get_fitz():
+def get_story():
     scoreboard = Data.scoreboard()
 
     # ------------------------------------the story-picker questions-----------
@@ -63,7 +63,7 @@ def add_points(scoreboard, points):
 
 
 def top_genre(scoreboard):
-    # "genre" now means a tag (Moon, Mars, Rover, Survival ...)
+    
     ranked_genres = sorted(scoreboard.items(), key=lambda x: x[1], reverse=True)
     top = []
     for genre, score in ranked_genres:
@@ -83,5 +83,5 @@ def top_genre(scoreboard):
 if __name__ == "__main__":
     tools.clear_screen()
     print("===================================")
-    print(get_fitz())
+    print(get_story())
     print("===================================")
