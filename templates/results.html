@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Your signals - Last Signal{% endblock %}
+
+{% block left %}
+<h1 class="title small">Your signals</h1>
+
+{% if content_list %}
+<p class="lead">These spacecraft match your answers. Pick one to read its story.</p>
+<ul class="link-list">
+    {% for slot, content in content_list.items() %}
+    <li>
+        <a href="{{ url_for('spacecraft_page', ship_id=content.id) }}">{{ content.title }}</a>
+        {% if content.id in read %}<span class="read-mark">read</span>{% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="lead">No spacecraft found for your answers.</p>
+{% endif %}
+
+<a class="button" href="{{ url_for('find_start') }}">Answer again</a>
+{% endblock %}

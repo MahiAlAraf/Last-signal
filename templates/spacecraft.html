@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{# On this page the right side shows the NASA picture, so the floating objects are switched off #}
+{% set show_objects = false %}
+
+{% block title %}{{ item.name }} - Last Signal{% endblock %}
+
+{# LEFT: only text. No menu. The Back to Home button comes from base.html #}
+{% block left %}
+<h1 class="title small">{{ item.name }}</h1>
+<p class="level-line">Your level: {{ player.level }}</p>
+
+{% if item.last_signal %}
+<p class="last-signal">LAST SIGNAL RECEIVED: {{ item.last_signal }}</p>
+{% endif %}
+
+{# spacecraft.js replaces this text with the story when the server answers #}
+<div id="story" class="story" data-url="{{ url_for('api_spacecraft', ship_id=item.id) }}">
+    <p class="loading">Receiving signal...</p>
+</div>
+
+<div id="sources" class="sources"></div>
+
+{# The quick question. spacecraft.js shows it once the story has arrived. #}
+<section id="quiz" class="quiz" hidden>
+    {% if already_read %}
+    <p class="muted">You already finished this story, so there are no new points.</p>
+    {% else %}
+    <h2>Quick question</h2>
+    <p class="quiz-question">{{ quiz_question }}</p>
+    <form method="POST" action="{{ url_for('spacecraft_quiz', ship_id=item.id) }}">
+        {% for number, text in quiz_options %}
+        <label class="option">
+            <input type="radio" name="answer" value="{{ number }}" required>
+            <span>{{ text }}</span>
+        </label>
+        {% endfor %}
+        <button type="submit">Check my answer</button>
+    </form>
+    {% endif %}
+</section>
+{% endblock %}
+
+{# RIGHT: the picture from the NASA Image and Video Library #}
+{% block right %}
+<figure id="image-box" class="nasa-figure">
+    <div class="image-placeholder">
+        <span class="pulse"></span>
+        <p>Searching NASA's archive...</p>
+    </div>
+</figure>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/spacecraft.js') }}"></script>
+{% endblock %}

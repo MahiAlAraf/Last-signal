@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Search - Last Signal{% endblock %}
+
+{% block left %}
+<h1 class="title small">Search a spacecraft</h1>
+
+{# method="GET": the text ends up in the address, like /search?q=voyager #}
+<form method="GET" action="{{ url_for('search') }}" class="name-form">
+    <input type="text" name="q" value="{{ typed }}" placeholder="Try: Spirit, Kepler, Ingenuity"
+           autocomplete="off" autofocus required>
+    <button type="submit">Search</button>
+</form>
+
+{% if not_found %}
+<p class="error">Sorry: that spacecraft is not in the Last Signal archive yet.</p>
+<p class="lead">Stories we have right now:</p>
+<ul class="link-list compact">
+    {% for item in spacecraft %}
+    <li><a href="{{ url_for('spacecraft_page', ship_id=item.id) }}">{{ item.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Last Signal{% endblock %}
+
+{# A brand-new visitor has no profile yet, so there is no profile icon and no Back button #}
+{% block topbar %}{% endblock %}
+{% block back %}{% endblock %}
+
+{% block left %}
+<h1 class="title">Last Signal</h1>
+<p class="lead">Every spacecraft left behind has one last story.</p>
+
+<form method="POST" class="name-form">
+    <label for="name">What is your name?</label>
+    <input type="text" id="name" name="name" maxlength="{{ max_name }}"
+           autocomplete="off" autofocus required>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <button type="submit">Begin</button>
+</form>
+{% endblock %}

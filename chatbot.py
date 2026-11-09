@@ -6,7 +6,19 @@ import Content_data
 import Data
 
 Model = "gemini-3.5-flash-lite"
-client = genai.Client()
+
+# CHANGED FOR THE WEB VERSION: the Gemini client used to be created the moment this file was
+# imported. If the API key was missing, the whole website crashed before it even started.
+# Now the client is created the first time it is needed, inside the try/except blocks below,
+# so a missing key or a bad connection only affects the story, never the whole site.
+_client = None
+
+
+def get_client():
+    global _client
+    if _client is None:
+        _client = genai.Client()
+    return _client
 
 
 def Check_title(Title):
@@ -39,7 +51,7 @@ def Check_title(Title):
         f"User input: {Title}"
     )
     try:
-        Response = client.models.generate_content(model=Model, contents=prompt)
+        Response = get_client().models.generate_content(model=Model, contents=prompt)
     except Exception as error:
         print(f"(Gemini could not be reached: {error})")
         return "UNKNOWN"
@@ -89,7 +101,7 @@ def Unique_message(Title, Level, Facts, Wiki_text, Captions):
     )
 
     try:
-        Responce = client.models.generate_content(model=Model, contents=prompt)
+        Responce = get_client().models.generate_content(model=Model, contents=prompt)
     except Exception as error:
         print(f"(Gemini could not be reached: {error})")
         return None

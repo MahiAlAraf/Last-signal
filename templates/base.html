@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Last Signal{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    {# ---------------------------------------------------------------------------
+       1. THE SLIDESHOW (PDF, Stage 5.5)
+       Every slide holds one background and one floating object. slideshow.js moves the
+       "active" class to the next slide every 5 seconds, and the CSS fades them together.
+       A page can hide the floating objects by writing  {% set show_objects = false %}
+       --------------------------------------------------------------------------- #}
+    <div class="slideshow">
+        {% for background, floating_object in slides %}
+        <div class="slide{% if loop.first %} active{% endif %}">
+            <img class="bg" src="{{ url_for('static', filename='img/' + background) }}" alt="">
+            {% if show_objects|default(true) %}
+            <div class="object-wrap">
+                <img class="float-object" src="{{ url_for('static', filename='img/' + floating_object) }}" alt="">
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    {# 2. THE DARK GRADIENT: black on the left so the text is easy to read, clear on the right #}
+    <div class="overlay"></div>
+
+    {# 3. TOP RIGHT: search icon and profile icon (hidden when we do not know the visitor yet) #}
+    {% block topbar %}
+    {% if player %}
+    <header class="topbar">
+        <a class="icon-button" href="{{ url_for('search') }}" title="Search" aria-label="Search">
+            {{ icon("search") }}
+        </a>
+
+        {# <details> opens and closes by itself when clicked: no JavaScript needed #}
+        <details class="profile">
+            <summary class="icon-button" title="Your profile" aria-label="Your profile">
+                {{ icon("user") }}
+            </summary>
+            <div class="profile-card">
+                <p class="profile-name">{{ player.name }}</p>
+                <p class="profile-level">Level: {{ player.level }}</p>
+                <p class="profile-line">Points: {{ player.points }}</p>
+                <p class="profile-line">Stories: {{ player.stories_read }} of {{ player.stories_total }} read</p>
+                {% if player.next_level %}
+                <p class="profile-line">Next level: {{ player.next_level[0] }}
+                    (in {{ player.next_level[1] }} more points)</p>
+                {% else %}
+                <p class="profile-line">You are at the top level!</p>
+                {% endif %}
+            </div>
+        </details>
+    </header>
+    {% endif %}
+    {% endblock %}
+
+    {# 4. TOP LEFT: the button back to Home (the Home page and Welcome page switch it off) #}
+    {% block back %}
+    <a class="button back-button" href="{{ url_for('home') }}">&larr; Back to Home</a>
+    {% endblock %}
+
+    {# 5. THE PAGE: a left column for text and a right column for a picture #}
+    <div class="page">
+        <section class="left">
+            <div class="inner">
+                {% include "_messages.html" %}
+                {% block left %}{% endblock %}
+            </div>
+        </section>
+
+        <section class="right">
+            {% block right %}{% endblock %}
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/slideshow.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

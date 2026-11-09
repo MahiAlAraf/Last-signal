@@ -1,0 +1,14 @@
+# Python makes these automatically
+__pycache__/
+*.pyc
+
+# your private box of libraries
+venv/
+.venv/
+
+# secrets (never put an API key in a file that goes to GitHub)
+.env
+
+# editor and system files
+.vscode/
+.DS_Store

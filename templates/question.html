@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Question {{ step }} - Last Signal{% endblock %}
+
+{% block left %}
+<p class="step-label">Question {{ step }} of {{ total }}</p>
+<h1 class="question">{{ question.text }}</h1>
+
+{# Each button sends its own value: request.form.get("answer") is "yes" or "no" #}
+<form method="POST" class="yes-no">
+    <button type="submit" name="answer" value="yes">Yes</button>
+    <button type="submit" name="answer" value="no">No</button>
+</form>
+{% endblock %}

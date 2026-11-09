@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Stories - Last Signal{% endblock %}
+
+{% block left %}
+<h1 class="title small">Stories</h1>
+<p class="lead">{{ read|length }} of {{ spacecraft|length }} read</p>
+
+<ul class="link-list">
+    {% for item in spacecraft %}
+    <li>
+        <a href="{{ url_for('spacecraft_page', ship_id=item.id) }}">{{ item.name }}</a>
+        {% if item.id in read %}<span class="read-mark">read</span>{% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

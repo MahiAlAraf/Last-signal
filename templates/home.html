@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Last Signal{% endblock %}
+
+{# The Home page is the only page with the menu, so it has no Back button #}
+{% block back %}{% endblock %}
+
+{% block left %}
+<nav class="menu">
+    <a href="{{ url_for('home') }}">{{ icon("home") }}<span>Home</span></a>
+    <a href="{{ url_for('find_start') }}">{{ icon("find") }}<span>Find your signal</span></a>
+    <a href="{{ url_for('stories') }}">{{ icon("stories") }}<span>Stories</span></a>
+    <a href="{{ url_for('settings') }}">{{ icon("settings") }}<span>Settings</span></a>
+    <p class="level-badge">Level: {{ player.level }}</p>
+</nav>
+{% endblock %}
