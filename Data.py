@@ -1,6 +1,6 @@
 # ----------------------------- 1. Levels ----------------------------------
 # (level name, minimum points). Keep sorted from lowest to highest.
-Levels = [("Explorer", 0), ("Navigator", 4), ("Commander", 12)]
+Levels = [("Explorer", 0), ("Navigator", 6), ("Commander", 12)]
 
 POINTS_FOR_NEW_STORY = 1  # reading a story you never read before
 POINTS_FOR_RIGHT_ANSWER = 2  # answering that story's quick question correctly
@@ -32,33 +32,6 @@ Level_style = {
         ),
     },
 }
-
-# ------------------------- 2. Starter questions ---------------------------
-Starter_questions = [
-    {
-        "text": "What is a rover?",
-        "options": [
-            "A vehicle that drives around on another world",
-            "A type of rocket engine",
-            "A telescope that orbits Earth",
-        ],
-        "answer": 0,
-    },
-    {
-        "text": "About how long does a radio signal take to travel one way between Mars and Earth?",
-        "options": [
-            "A few seconds",
-            "Between about 3 and 22 minutes",
-            "About two days",
-        ],
-        "answer": 1,
-    },
-    {
-        "text": "Which NASA program landed astronauts on the Moon between 1969 and 1972?",
-        "options": ["Voyager", "Apollo", "Viking"],
-        "answer": 1,
-    },
-]
 
 
 # ------------------------ 3. Story-picker quiz ----------------------------

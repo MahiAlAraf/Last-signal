@@ -1,23 +1,5 @@
 """
 Last Signal - Flask web version
-===============================
-Every spacecraft left behind has one last story.
-
-How this file is organised (top to bottom):
-    1. Setup              create the app, the settings and a few small constants
-    2. Profile helpers    the visitor's name, points and read stories live in the session
-    3. Before every page  a new visitor is first asked for their name
-    4. Pages              one function per page (these are the "routes")
-    5. The story API      the spacecraft page asks this route for the story and the NASA picture
-    6. Start the server
-
-The old terminal files are REUSED, not rewritten:
-    Data.py               the spacecraft archive, the questions, the levels
-    Content_data.py       find a spacecraft, build the list of matches
-    chatbot.py            Gemini: fix a typed name, write the story
-    search_spacecraft.py  fetch_details(): Wikipedia text + NASA Image Library pictures
-    tools.py              get_level(), points_to_next_level()
-    get_story.py          top_genre(), add_points() for the story-picker quiz
 """
 import os
 import random
@@ -34,47 +16,27 @@ from get_story import add_points, top_genre
 from icons import icon
 from search_spacecraft import fetch_details
 
-# ====================================================================
-# 1. SETUP
-# ====================================================================
 app = Flask(__name__)
-
-# The secret key signs the session cookie so nobody can change it (PDF, Stage 3).
-# For a real public website, put a long random value in FLASK_SECRET_KEY.
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-only-change-me")
-
-# A "permanent" session cookie survives closing the browser, so a visitor is remembered.
 app.permanent_session_lifetime = timedelta(days=365)
 
 # Lets every template write {{ icon("search") }}
 app.add_template_global(icon)
-
-# Each slide is ONE background and ONE floating object. They sit inside the same
-# slide, so when the slide fades in or out, both fade together.
-# To pair them differently, or add a fifth pair, just edit this list.
 SLIDES = [
     ("bg1.jpg", "object1.webp"),
     ("bg2.jpg", "object2.webp"),
     ("bg3.jpg", "object3.webp"),
     ("bg4.jpg", "object4.webp"),
 ]
-
-# The five section titles that chatbot.Unique_message asks Gemini to write.
 STORY_TITLES = ["LAUNCH", "THE MISSION", "THE END", "WHERE I AM NOW",
                 "THE SCIENCE I LEFT BEHIND"]
 
-# Things we already looked up, so the second visit to a page is instant.
 details_cache = {}   # spacecraft id          -> Wikipedia text + NASA pictures
 story_cache = {}     # (spacecraft id, level) -> the story Gemini wrote
 
-
-# ====================================================================
-# 2. PROFILE HELPERS
-#    The terminal version saved the profile in profiles.csv (one person).
-#    The web version keeps it in the session cookie (one profile per visitor).
-# ====================================================================
+#___________________________get profile form session________________________________________
 def get_profile():
-    """The visitor's profile as a dict, or None if they have not told us their name yet."""
+    
     name = session.get("name")
     if not name:
         return None
@@ -86,7 +48,7 @@ def get_profile():
 
 
 def add_progress(story_id, points_gained):
-    """Same idea as tools.add_progress, but saved in the session instead of profiles.csv."""
+
     stories = session.get("stories", [])
     if story_id not in stories:
         stories.append(story_id)
@@ -103,14 +65,12 @@ def check_name(name):
     return None
 
 
-# ====================================================================
-# 3. BEFORE EVERY PAGE
-# ====================================================================
+
+# 3. ____________________________________BEFORE EVERY PAGE________________________________
 @app.before_request
 def ask_new_visitors_for_their_name():
-    """Flask runs this before EVERY request. A visitor with no name goes to /welcome first."""
     if request.endpoint in ("welcome", "static"):
-        return None                                   # these pages are always allowed
+        return None                                   
     if request.endpoint is not None and get_profile() is None:
         return redirect(url_for("welcome"))
     return None
@@ -118,7 +78,6 @@ def ask_new_visitors_for_their_name():
 
 @app.context_processor
 def add_shared_values():
-    """Variables that EVERY template can use (PDF, Stage 3.8)."""
     values = {"slides": SLIDES, "player": None}
 
     profile = get_profile()
@@ -133,13 +92,9 @@ def add_shared_values():
         }
     return values
 
-
-# ====================================================================
-# 4. PAGES
-# ====================================================================
+#_____________________________________________________existence checking____________________________________________
 @app.route("/welcome", methods=["GET", "POST"])
 def welcome():
-    """The only thing we ask a new visitor is their name. No knowledge questions."""
     if get_profile() is not None:
         return redirect(url_for("home"))
 
@@ -150,7 +105,7 @@ def welcome():
         if error is None:
             session.permanent = True
             session["name"] = name
-            session["points"] = 0              # 0 points = the first level, Explorer
+            session["points"] = 0             
             session["stories"] = []
             return redirect(url_for("home"))
 
@@ -238,7 +193,6 @@ def search():
 # ---------------------------------------------------- One spacecraft
 @app.route("/spacecraft/<ship_id>")
 def spacecraft_page(ship_id):
-    """Text on the left, NASA picture on the right, no menu. The slow parts load afterwards."""
     item = Content_data.find_item(ship_id)
     if item is None:
         abort(404)
@@ -258,7 +212,6 @@ def spacecraft_page(ship_id):
 
 @app.route("/spacecraft/<ship_id>/quiz", methods=["POST"])
 def spacecraft_quiz(ship_id):
-    """The 'quick question' after a story. Same points rules as the terminal story_quiz()."""
     item = Content_data.find_item(ship_id)
     if item is None:
         abort(404)
@@ -266,7 +219,7 @@ def spacecraft_quiz(ship_id):
 
     profile = get_profile()
     if ship_id in profile["stories"]:
-        flash("You already finished this story, so there are no new points.")
+        flash("You already finished this story, so there are no new points.")      #for CHALAK public :) 
         return back_to_story
 
     try:
@@ -320,21 +273,17 @@ def page_not_found(error):
     return render_template("404.html"), 404
 
 
-# ====================================================================
-# 5. THE STORY API
 #    The spacecraft page loads at once. Then spacecraft.js asks this route for the
-#    slow parts (Wikipedia, NASA, Gemini) and fills them in (PDF, Stage 5.6).
+#    slow parts (Wikipedia, NASA, Gemini) and fills them in
 # ====================================================================
 def get_details(ship_id):
-    """Wikipedia text and NASA pictures. They are the same for every level, so cache them."""
     if ship_id in details_cache:
         return details_cache[ship_id]
 
     facts, wiki_text, captions, images, sources = fetch_details(ship_id)
     details = {"facts": facts, "wiki_text": wiki_text, "captions": captions,
                "images": images, "sources": sources}
-
-    # Do not remember an empty answer (no internet?), so the next visit can try again.
+    
     if wiki_text or images:
         details_cache[ship_id] = details
     return details
@@ -391,9 +340,8 @@ def api_spacecraft(ship_id):
     })
 
 
-# ====================================================================
-# 6. START THE SERVER
-# ====================================================================
+#_____________________________kioo  ladleee    meawoooooo   :)___________________
 if __name__ == "__main__":
-    # debug=True restarts the server when you save a file. Turn it OFF for a public website.
+    # debug=True automatcly updates the server
+    # madarboard  publish er age False  koira dibi :   vulbi na Mahi 
     app.run(debug=True)

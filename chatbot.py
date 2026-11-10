@@ -35,7 +35,7 @@ def Check_title(Title):
         for alias in entry["aliases"]:
             spellings[alias] = entry["name"]
 
-    close = difflib.get_close_matches(Title.strip().lower(), list(spellings), n=1, cutoff=0.7)
+    close = difflib.get_close_matches(Title.strip().lower(), list(spellings), n=1, cutoff=0.7)  #don't understand ths line
     if close:
         return spellings[close[0]]
 

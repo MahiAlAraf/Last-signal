@@ -7,7 +7,7 @@
 
 {# method="GET": the text ends up in the address, like /search?q=voyager #}
 <form method="GET" action="{{ url_for('search') }}" class="name-form">
-    <input type="text" name="q" value="{{ typed }}" placeholder="Try: Spirit, Kepler, Ingenuity"
+    <input type="text" name="q" value="{{ typed }}" placeholder=" Search any space equipment"
            autocomplete="off" autofocus required>
     <button type="submit">Search</button>
 </form>

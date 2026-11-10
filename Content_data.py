@@ -21,7 +21,6 @@ def find_by_name(text):
 
 
 def find_item(Ship_ID):
-    """Look for a spacecraft by its id. Returns the archive item, or None."""
     for item in Data.Spacecraft:
         if item["id"] == Ship_ID:
             return item
