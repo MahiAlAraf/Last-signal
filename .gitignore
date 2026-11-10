@@ -12,3 +12,4 @@ venv/
 # editor and system files
 .vscode/
 .DS_Store
+tempCodeRunnerFile.py
