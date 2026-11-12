@@ -1,12 +1,8 @@
-"""
-Last Signal - Flask web version
-"""
 import os
 import random
 from datetime import timedelta
 
-from flask import (Flask, abort, flash, jsonify, redirect, render_template,
-                   request, session, url_for)
+from flask import (Flask, abort, flash, jsonify, redirect, render_template, request, session, url_for)
 
 import chatbot
 import Content_data
@@ -20,7 +16,6 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-only-change-me")
 app.permanent_session_lifetime = timedelta(days=365)
 
-# Lets every template write {{ icon("search") }}
 app.add_template_global(icon)
 SLIDES = [
     ("bg1.jpg", "object1.webp"),
@@ -28,8 +23,7 @@ SLIDES = [
     ("bg3.jpg", "object3.webp"),
     ("bg4.jpg", "object4.webp"),
 ]
-STORY_TITLES = ["LAUNCH", "THE MISSION", "THE END", "WHERE I AM NOW",
-                "THE SCIENCE I LEFT BEHIND"]
+STORY_TITLES = ["LAUNCH", "THE MISSION", "THE END", "WHERE I AM NOW", "THE SCIENCE I LEFT BEHIND"]
 
 details_cache = {}   # spacecraft id          -> Wikipedia text + NASA pictures
 story_cache = {}     # (spacecraft id, level) -> the story Gemini wrote
@@ -344,4 +338,4 @@ def api_spacecraft(ship_id):
 if __name__ == "__main__":
     # debug=True automatcly updates the server
     # madarboard  publish er age False  koira dibi :   vulbi na Mahi 
-    app.run(debug=True)
+    app.run()
