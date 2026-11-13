@@ -1285,42 +1285,58 @@
 
 
         /* ------------------------------------------------------------------
-           10. LOGIN PAGE: an astronaut hangs from the top, the name below, then the form
+           10. LOGIN PAGE: a dark rounded box in the middle, the astronaut on its right side
            ------------------------------------------------------------------ */
         .login {
-            --astro-h: min(62vh, 540px);        /* height of the whole astronaut picture */
-            position: relative;
-            height: 100vh;
-            overflow-y: auto;                   /* the top of the astronaut is cut off by the screen edge */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(8px, 3vw, 48px);
+            padding: 30px 20px;
+        }
+
+        .login-box {
+            width: min(460px, 100%);
+            padding: 40px 44px 34px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* only the helmet part (the lower 40% after turning him upside down) is visible */
-            padding: calc(var(--astro-h) * 0.4 - 16px) 20px 30px;
+            background: rgba(8, 12, 24, 0.74);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 28px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
         }
 
+        /* The astronaut stands on the right side of the box and floats up and down gently */
         .login-astro {
-            position: absolute;
-            top: calc(var(--astro-h) * -0.6);
-            left: 50%;
-            height: var(--astro-h);
+            height: min(58vh, 480px);
             width: auto;
-            transform: translateX(-50%) rotate(180deg);
+            flex-shrink: 0;
             filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.55));
             pointer-events: none;
-            animation: hang 6s ease-in-out infinite alternate;
+            animation: astro-float 6s ease-in-out infinite alternate;
         }
 
-        @keyframes hang {
-            from { margin-top: -6px; }
-            to   { margin-top: 10px; }
+        @keyframes astro-float {
+            from { transform: translateY(-10px) rotate(-2deg); }
+            to   { transform: translateY(12px) rotate(2deg); }
+        }
+
+        /* Phones and small tablets: there is no room beside the box, so he goes below it */
+        @media (max-width: 900px) {
+            .login { flex-direction: column; justify-content: flex-start; }
+            .login-box { padding: 30px 24px 26px; }
+            .login-astro { height: min(30vh, 240px); }
         }
 
         .login-mark {
             position: relative;
             font-family: var(--font-title);
             font-weight: 400;
-            font-size: clamp(46px, 7vw, 92px);
+            font-size: clamp(36px, 4.4vw, 58px);
             line-height: 1;
             letter-spacing: 0.03em;
             text-align: center;
@@ -1328,7 +1344,7 @@
         }
 
         .login-heading {
-            margin: 14px 0 20px;
+            margin: 12px 0 20px;
             font-size: clamp(24px, 2.4vw, 34px);
             font-weight: 600;
             letter-spacing: 0.02em;

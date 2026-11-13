@@ -18,7 +18,6 @@ app.permanent_session_lifetime = timedelta(days=365)
 
 app.add_template_global(icon)
 SLIDES = [
-    ("bg1.jpg", "object1.webp"),
     ("bg2.jpg", "object2.webp"),
     ("bg3.jpg", "object3.webp"),
     ("bg4.jpg", "object4.webp"),

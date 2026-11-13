@@ -5,12 +5,11 @@
 {# A brand-new visitor has no profile yet, so the top menu bar is switched off #}
 {% block nav %}{% endblock %}
 
-{# The Login page is also its own layout: an astronaut hangs from the top of the screen,
-   the Last Signal name sits below him, then the form. Only the name is needed. #}
+{# The Login page is also its own layout: a dark rounded box in the middle (name, form),
+   and the astronaut on its right side. Only the name is needed. #}
 {% block page %}
 <main class="login">
-    <img class="login-astro" src="{{ url_for('static', filename='img/object1.webp') }}" alt="">
-
+    <div class="login-box">
     <h1 class="login-mark">LAST SiGNAL</h1>
     <h2 class="login-heading">Login</h2>
 
@@ -25,5 +24,8 @@
     </form>
 
     <p class="login-note">Just your name. No email, no password.</p>
+    </div>
+
+    <img class="login-astro" src="{{ url_for('static', filename='img/astronaut.webp') }}" alt="">
 </main>
 {% endblock %}
