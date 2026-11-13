@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Signal lost - Last Signal{% endblock %}
+{% block title %}Signal lost · Last Signal{% endblock %}
 
 {% block left %}
+<p class="eyebrow"><i class="dot amber blink"></i>Error 404 &middot; No carrier</p>
 <h1 class="title">Signal lost</h1>
 <p class="lead">We could not find that page. It may have drifted out of range.</p>
+<a class="button" href="{{ url_for('home') }}">Return to the Command Deck</a>
 {% endblock %}

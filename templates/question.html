@@ -1,14 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Question {{ step }} - Last Signal{% endblock %}
+{% block title %}Scan {{ step }} of {{ total }} · Last Signal{% endblock %}
 
 {% block left %}
-<p class="step-label">Question {{ step }} of {{ total }}</p>
+<p class="eyebrow">Signal scan &middot; {{ step }} of {{ total }}</p>
+
+{# One thin bar per question: finished ones glow cyan, the current one glows amber #}
+<div class="segments" aria-hidden="true">
+    {% for n in range(1, total + 1) %}<span class="seg{% if n < step %} done{% elif n == step %} now{% endif %}"></span>{% endfor %}
+</div>
+
 <h1 class="question">{{ question.text }}</h1>
 
 {# Each button sends its own value: request.form.get("answer") is "yes" or "no" #}
 <form method="POST" class="yes-no">
-    <button type="submit" name="answer" value="yes">Yes</button>
-    <button type="submit" name="answer" value="no">No</button>
+    <button type="submit" name="answer" value="yes">Yes<small>affirmative</small></button>
+    <button type="submit" name="answer" value="no">No<small>negative</small></button>
 </form>
 {% endblock %}

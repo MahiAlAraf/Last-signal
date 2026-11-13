@@ -1,16 +1,38 @@
 {% extends "base.html" %}
 
-{% block title %}Home - Last Signal{% endblock %}
+{% block title %}Command Deck · Last Signal{% endblock %}
 
-{# The Home page is the only page with the menu, so it has no Back button #}
-{% block back %}{% endblock %}
+{# Only this page shows the floating objects above the video #}
+{% set show_objects = true %}
 
-{% block left %}
-<nav class="menu">
-    <a href="{{ url_for('home') }}">{{ icon("home") }}<span>Home</span></a>
-    <a href="{{ url_for('find_start') }}">{{ icon("find") }}<span>Find your signal</span></a>
-    <a href="{{ url_for('stories') }}">{{ icon("stories") }}<span>Stories</span></a>
-    <a href="{{ url_for('settings') }}">{{ icon("settings") }}<span>Settings</span></a>
-    <p class="level-badge">Level: {{ player.level }}</p>
-</nav>
+{# The Home page is a big title over the video, so it replaces the whole "page" block of base.html.
+   The menus are in the top bar, so there is no menu list here any more. #}
+{% block page %}
+<main class="hero">
+
+    {# The small tab on the left edge. It shows your level and points, and opens the Mission archive. #}
+    <a class="side-pill" href="{{ url_for('stories') }}" title="Open the Mission archive">
+        <span>Level: {{ player.level }} &nbsp;&middot;&nbsp; {{ player.points }} pts</span>
+    </a>
+
+    {% include "_messages.html" %}
+
+    <div class="hero-copy">
+        {# 01/04 ... shows which floating object is on screen. Only one is visible at a time (see the CSS). #}
+        <p class="counter" aria-hidden="true">
+            {% for slide in slides %}<span class="c{{ loop.index }}">{{ '%02d'|format(loop.index) }}/{{ '%02d'|format(slides|length) }}</span>{% endfor %}
+        </p>
+
+        <h1 class="hero-title">LAST<br>SiGNAL</h1>
+
+        <p class="hero-sub">Welcome aboard, {{ player.name }}. Every spacecraft left behind has one last story.</p>
+
+        <a class="button" href="{{ url_for('find_start') }}">Scan for a signal &rarr;</a>
+    </div>
+
+    {# The thin bar on the right edge: one piece for every floating object #}
+    <div class="rail" aria-hidden="true">
+        {% for slide in slides %}<i></i>{% endfor %}
+    </div>
+</main>
 {% endblock %}

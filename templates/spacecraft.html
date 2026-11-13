@@ -1,22 +1,25 @@
 {% extends "base.html" %}
 
-{# On this page the right side shows the NASA picture, so the floating objects are switched off #}
-{% set show_objects = false %}
+{% block title %}{{ item.name }} · Last Signal{% endblock %}
 
-{% block title %}{{ item.name }} - Last Signal{% endblock %}
+{# "wide" makes the dark window big (most of the screen): story on the left, NASA picture on the right #}
+{% block window_class %}wide{% endblock %}
 
-{#The Back to Home button comes from base.html #}
 {% block left %}
+<p class="eyebrow"><i class="dot blink"></i>Transmission log</p>
 <h1 class="title small">{{ item.name }}</h1>
-<p class="level-line">Your level: {{ player.level }}</p>
 
-{% if item.last_signal %}
-<p class="last-signal">LAST SIGNAL RECEIVED: {{ item.last_signal }}</p>
-{% endif %}
+<div class="chips">
+    <span class="chip cyan">Your level: {{ player.level }}</span>
+    {% if item.last_signal %}
+    <span class="chip amber"><i class="dot amber blink"></i>LAST SIGNAL RECEIVED: {{ item.last_signal }}</span>
+    {% endif %}
+    {% for tag in item.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+</div>
 
 {# spacecraft.js replaces this text with the story when the server answers #}
 <div id="story" class="story" data-url="{{ url_for('api_spacecraft', ship_id=item.id) }}">
-    <p class="loading">Receiving signal...</p>
+    <p class="loading"><span class="bars"><i></i><i></i><i></i><i></i></span>Receiving signal...</p>
 </div>
 
 <div id="sources" class="sources"></div>
@@ -24,8 +27,9 @@
 {# The quick question. spacecraft.js shows it once the story has arrived. #}
 <section id="quiz" class="quiz" hidden>
     {% if already_read %}
-    <p class="muted">You already finished this story, so there are no new points.</p>
+    <p class="quiz-done"><i class="dot"></i>You already finished this story, so there are no new points.</p>
     {% else %}
+    <p class="mono-label">Mission debrief</p>
     <h2>Quick question</h2>
     <p class="quiz-question">{{ quiz_question }}</p>
     <form method="POST" action="{{ url_for('spacecraft_quiz', ship_id=item.id) }}">
@@ -35,13 +39,13 @@
             <span>{{ text }}</span>
         </label>
         {% endfor %}
-        <button type="submit">Check my answer</button>
+        <button type="submit" class="primary">Check my answer</button>
     </form>
     {% endif %}
 </section>
 {% endblock %}
 
-{# RIGHT: the picture from the NASA Image and Video Library #}
+{# RIGHT: the picture from the NASA Image and Video Library, filling the right side of the window #}
 {% block right %}
 <figure id="image-box" class="nasa-figure">
     <div class="image-placeholder">

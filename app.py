@@ -308,6 +308,14 @@ def pick_image(images):
     return {"url": images[0]["url"], "title": images[0]["title"]}
 
 
+def nasa_sources(item):
+    """The official NASA page for this spacecraft (from Data.py), shown under the story."""
+    url = item.get("nasa_url")
+    if not url:
+        return []
+    return ["NASA official mission page: " + url]
+
+
 @app.route("/api/spacecraft/<ship_id>")
 def api_spacecraft(ship_id):
     item = Content_data.find_item(ship_id)
@@ -330,7 +338,7 @@ def api_spacecraft(ship_id):
         "sections": split_story(story) if story else [],
         "facts": item["facts"],                           # Plan B when Gemini is not available
         "image": pick_image(details["images"]),
-        "sources": ["Last Signal archive (key facts)"] + details["sources"],
+        "sources": ["Last Signal archive (key facts)"] + details["sources"] + nasa_sources(item),
     })
 
 
