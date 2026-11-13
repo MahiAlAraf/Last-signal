@@ -1,5 +1,8 @@
+import html
 import re
 from urllib.parse import quote
+
+import requests
 
 import chatbot
 import Content_data
@@ -135,6 +138,33 @@ def clean_text(text, limit=400):
     return text
 
 
+def fetch_nasa_page_text(url, limit=1500):
+    """Read NASA's official page for a spacecraft (NSSDCA or science.nasa.gov) and return its text.
+    Any problem (no internet, page changed, blocked) returns "" so the story still works."""
+    try:
+        page = requests.get(url, headers={"User-Agent": Content_data.USER_AGENT}, timeout=10)
+        page.raise_for_status()
+        raw = page.text
+    except requests.exceptions.RequestException:
+        return ""
+
+    raw = re.sub(r"(?is)<(script|style|nav|header|footer)[^>]*>.*?</\1>", " ", raw)
+
+    parts = []
+    # the short summary NASA writes for search engines
+    meta = re.search(r'(?is)<meta[^>]+(?:name|property)=["\'](?:og:)?description["\'][^>]*content=["\']([^"\']+)', raw)
+    if meta:
+        parts.append(meta.group(1))
+    # then the normal paragraphs of the page
+    for paragraph in re.findall(r"(?is)<p[^>]*>(.*?)</p>", raw):
+        paragraph = clean_text(html.unescape(paragraph), limit=limit)
+        if len(paragraph) > 60:  # skip tiny menu/footer fragments
+            parts.append(paragraph)
+
+    text = clean_text(html.unescape(" ".join(parts)), limit=limit)
+    return text
+
+
 def fetch_details(ID):
     item = Content_data.find_item(ID)
     Facts = item["facts"]  # our own facts always work, even with no internet
@@ -175,6 +205,14 @@ def fetch_details(ID):
                 Images.append({"title": title, "url": image_url})
         if Images:
             Sources.append("NASA Image and Video Library (images.nasa.gov)")
+
+    # ----------------------NASA official mission page (Space Apps resource)---------------------
+    nasa_url = item.get("nasa_url")
+    if nasa_url:
+        nasa_text = fetch_nasa_page_text(nasa_url)
+        if nasa_text:
+            Captions.insert(0, "From NASA's official mission page: " + nasa_text)
+            Sources.append(f"NASA official mission page (data used): {nasa_url}")
 
     return Facts, Wiki_text, Captions, Images, Sources
 
