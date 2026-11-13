@@ -1,22 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Settings - Last Signal{% endblock %}
+{% block title %}Operator settings · Last Signal{% endblock %}
 
 {% block left %}
+<p class="eyebrow">Operator settings</p>
 <h1 class="title small">Settings</h1>
 
 <form method="POST" class="name-form">
-    <label for="name">Your name</label>
-    <input type="text" id="name" name="name" value="{{ player.name }}"
-           maxlength="{{ max_name }}" autocomplete="off" required>
+    <label for="name">Your callsign</label>
+    <div class="field">
+        <input type="text" id="name" name="name" value="{{ player.name }}"
+               maxlength="{{ max_name }}" autocomplete="off" required>
+    </div>
     {% if error %}<p class="error">{{ error }}</p>{% endif %}
-    <button type="submit">Save name</button>
+    <button type="submit" class="primary">Save name</button>
 </form>
 
-<h2 class="section-title">Start again</h2>
-<p class="lead">Deleting your profile removes all your data.</p>
-<form method="POST" action="{{ url_for('delete_profile') }}"
-      onsubmit="return confirm('Delete your profile? This cannot be undone.');">
-    <button type="submit" class="danger">Delete my profile</button>
-</form>
+<div class="danger-zone">
+    <h2 class="section-title">Start again</h2>
+    <p class="lead">Deleting your profile removes all your data.</p>
+    <form method="POST" action="{{ url_for('delete_profile') }}"
+          onsubmit="return confirm('Delete your profile? This cannot be undone.');">
+        <button type="submit" class="danger">Delete my profile</button>
+    </form>
+</div>
 {% endblock %}

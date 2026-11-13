@@ -1,16 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}Stories - Last Signal{% endblock %}
+{% block title %}Mission archive · Last Signal{% endblock %}
 
 {% block left %}
-<h1 class="title small">Stories</h1>
+<p class="eyebrow">Deep space archive</p>
+<h1 class="title small">Mission archive</h1>
 <p class="lead">{{ read|length }} of {{ spacecraft|length }} read</p>
+<div class="meter stats-meter" aria-hidden="true">
+    <span style="width: {{ ((read|length * 100 / spacecraft|length)|round|int) if spacecraft else 0 }}%"></span>
+</div>
 
-<ul class="link-list">
+<ul class="link-list grid">
     {% for item in spacecraft %}
     <li>
-        <a href="{{ url_for('spacecraft_page', ship_id=item.id) }}">{{ item.name }}</a>
-        {% if item.id in read %}<span class="read-mark">read</span>{% endif %}
+        <a class="signal-card" href="{{ url_for('spacecraft_page', ship_id=item.id) }}">
+            <span class="idx">No. {{ '%02d'|format(loop.index) }}</span>
+            <span class="name">{{ item.name }}</span>
+            {% if item.id in read %}<span class="read-mark">Decoded</span>{% else %}<span class="new-mark">Unread</span>{% endif %}
+        </a>
     </li>
     {% endfor %}
 </ul>

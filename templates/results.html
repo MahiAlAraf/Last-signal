@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}Your signals - Last Signal{% endblock %}
+{% block title %}Signals detected · Last Signal{% endblock %}
 
 {% block left %}
-<h1 class="title small">Your signals</h1>
+<p class="eyebrow"><i class="dot blink"></i>Scan complete</p>
+<h1 class="title small">Signals detected</h1>
 
 {% if content_list %}
-<p class="lead">These spacecraft match your answers. Pick one to read its story.</p>
+<p class="lead">{{ content_list|length }} spacecraft match your answers. Pick one to decode its story.</p>
 <ul class="link-list">
     {% for slot, content in content_list.items() %}
     <li>
-        <a href="{{ url_for('spacecraft_page', ship_id=content.id) }}">{{ content.title }}</a>
-        {% if content.id in read %}<span class="read-mark">read</span>{% endif %}
+        <a class="signal-card" href="{{ url_for('spacecraft_page', ship_id=content.id) }}">
+            <span class="idx">{{ '%02d'|format(slot) }}</span>
+            <span class="name">{{ content.title }}</span>
+            {% if content.id in read %}<span class="read-mark">Decoded</span>{% else %}<span class="new-mark">New</span>{% endif %}
+            <span class="arrow">&rarr;</span>
+        </a>
     </li>
     {% endfor %}
 </ul>
@@ -19,5 +24,5 @@
 <p class="lead">No spacecraft found for your answers.</p>
 {% endif %}
 
-<a class="button" href="{{ url_for('find_start') }}">Answer again</a>
+<a class="button" href="{{ url_for('find_start') }}">Scan again</a>
 {% endblock %}

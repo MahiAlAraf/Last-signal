@@ -1,7 +1,8 @@
-{# Short notes from the server, like "Correct!" or "Name updated." (Flask's flash) #}
+{# Short notes from the server, like "Correct!" or "Name updated." (Flask's flash).
+   role="status" tells screen readers to read them out when they appear. #}
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-    <div class="messages">
+    <div class="messages" role="status">
         {% for category, message in messages %}
         <p class="message {{ category }}">{{ message }}</p>
         {% endfor %}
