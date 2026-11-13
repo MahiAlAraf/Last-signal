@@ -1,20 +1,29 @@
 {% extends "base.html" %}
 
-{% block title %}Welcome - Last Signal{% endblock %}
+{% block title %}Login · Last Signal{% endblock %}
 
-{# A brand-new visitor has no profile yet, so there is no profile icon and no Back button #}
-{% block topbar %}{% endblock %}
-{% block back %}{% endblock %}
+{# A brand-new visitor has no profile yet, so the top menu bar is switched off #}
+{% block nav %}{% endblock %}
 
-{% block left %}
-<h1 class="title">Last Signal</h1>
-<p class="lead">Every spacecraft left behind has one last story.</p>
+{# The Login page is also its own layout: an astronaut hangs from the top of the screen,
+   the Last Signal name sits below him, then the form. Only the name is needed. #}
+{% block page %}
+<main class="login">
+    <img class="login-astro" src="{{ url_for('static', filename='img/object1.webp') }}" alt="">
 
-<form method="POST" class="name-form">
-    <label for="name">What is your name?</label>
-    <input type="text" id="name" name="name" maxlength="{{ max_name }}"
-           autocomplete="off" autofocus required>
-    {% if error %}<p class="error">{{ error }}</p>{% endif %}
-    <button type="submit">Begin</button>
-</form>
+    <h1 class="login-mark">LAST SiGNAL</h1>
+    <h2 class="login-heading">Login</h2>
+
+    <form method="POST" class="login-form">
+        <label for="name" class="sr-only">Your name</label>
+        <div class="field">
+            <input type="text" id="name" name="name" maxlength="{{ max_name }}"
+                   placeholder="Name" autocomplete="off" autofocus required>
+        </div>
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        <button type="submit">Submit</button>
+    </form>
+
+    <p class="login-note">Just your name. No email, no password.</p>
+</main>
 {% endblock %}

@@ -95,6 +95,7 @@ Questions = [
 Spacecraft = [
     {
         "id": "spirit",
+        "nasa_url": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
         "name": "Spirit rover",
         "aliases": ["spirit", "mer-a", "mars exploration rover spirit"],
         "tags": ["Mars", "Rover", "Survival", "Discovery"],
@@ -121,6 +122,7 @@ Spacecraft = [
     },
     {
         "id": "opportunity",
+        "nasa_url": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
         "name": "Opportunity rover",
         "aliases": ["opportunity", "oppy", "mer-b", "mars exploration rover opportunity"],
         "tags": ["Mars", "Rover", "Survival", "Discovery"],
@@ -147,6 +149,7 @@ Spacecraft = [
     },
     {
         "id": "sojourner",
+        "nasa_url": "https://science.nasa.gov/mission/mars-pathfinder/",
         "name": "Sojourner rover",
         "aliases": ["sojourner", "mars pathfinder", "pathfinder"],
         "tags": ["Mars", "Rover", "Firsts", "Discovery"],
@@ -173,6 +176,7 @@ Spacecraft = [
     },
     {
         "id": "ingenuity",
+        "nasa_url": "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/",
         "name": "Ingenuity helicopter",
         "aliases": ["ingenuity", "mars helicopter", "ingenuity mars helicopter"],
         "tags": ["Mars", "Firsts"],
@@ -194,6 +198,7 @@ Spacecraft = [
     },
     {
         "id": "phoenix",
+        "nasa_url": "https://science.nasa.gov/mission/insight/",
         "name": "Phoenix lander",
         "aliases": ["phoenix", "phoenix mars lander"],
         "tags": ["Mars", "Lander", "Survival", "Discovery"],
@@ -215,6 +220,7 @@ Spacecraft = [
     },
     {
         "id": "viking1",
+        "nasa_url": "https://science.nasa.gov/mission/viking-1/",
         "name": "Viking 1 lander",
         "aliases": ["viking", "viking 1", "viking lander", "viking 1 lander"],
         "tags": ["Mars", "Lander", "Discovery"],
@@ -237,6 +243,7 @@ Spacecraft = [
     },
     {
         "id": "insight",
+        "nasa_url": "https://science.nasa.gov/mission/insight/",
         "name": "InSight lander",
         "aliases": ["insight", "mars insight"],
         "tags": ["Mars", "Lander", "Survival", "Discovery"],
@@ -258,6 +265,7 @@ Spacecraft = [
     },
     {
         "id": "lrv",
+        "nasa_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1971-063C",
         "name": "Apollo Lunar Roving Vehicle",
         "aliases": ["lrv", "lunar rover", "moon buggy", "apollo rover", "lunar roving vehicle"],
         "tags": ["Moon", "Rover", "Humans"],
@@ -283,6 +291,7 @@ Spacecraft = [
     },
     {
         "id": "alsep",
+        "nasa_url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-099C",
         "name": "Apollo Lunar Surface Experiments Package (ALSEP)",
         "aliases": ["alsep", "apollo moon experiments", "apollo lunar surface experiments package"],
         "tags": ["Moon", "Humans", "Discovery"],
@@ -308,6 +317,7 @@ Spacecraft = [
     },
     {
         "id": "surveyor3",
+        "nasa_url": "https://science.nasa.gov/mission/surveyor-3/",
         "name": "Surveyor 3 lander",
         "aliases": ["surveyor", "surveyor 3"],
         "tags": ["Moon", "Lander", "Humans"],
@@ -333,6 +343,7 @@ Spacecraft = [
     },
     {
         "id": "pioneer10",
+        "nasa_url": "https://science.nasa.gov/mission/pioneer-10/",
         "name": "Pioneer 10 probe",
         "aliases": ["pioneer", "pioneer 10"],
         "tags": ["Deep Space", "Firsts", "Discovery"],
@@ -358,6 +369,7 @@ Spacecraft = [
     },
     {
         "id": "kepler",
+        "nasa_url": "https://science.nasa.gov/mission/kepler/",
         "name": "Kepler Space Telescope",
         "aliases": ["kepler", "kepler telescope", "kepler space telescope"],
         "tags": ["Deep Space", "Discovery"],
