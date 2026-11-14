@@ -39,4 +39,4 @@ Without a Gemini key the site still works: the story page shows the facts from D
 | static/img/ | 4 backgrounds and 4 floating objects |
 
 ## Data sources
-Spacecraft text from Wikipedia, pictures from the NASA Image and Video Library, stories written by Google Gemini.
+Spacecraft text from Wikipedia, spacecraft info from NASA NSSDCA, pictures from the NASA Image and Video Library, stories written by Google Gemini.
